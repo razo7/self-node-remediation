@@ -9,8 +9,8 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/Masterminds/sprig"
 	"github.com/pkg/errors"
+	ttemplate "text/template"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/yaml"
@@ -106,7 +106,7 @@ func renderTemplate(path string, d *Data) (*bytes.Buffer, error) {
 
 	// Add universal functions
 	tmpl.Funcs(template.FuncMap{"getOr": getOr, "isSet": isSet})
-	tmpl.Funcs(sprig.TxtFuncMap())
+	tmpl.Funcs(ttemplate.FuncMap(GenericFuncMap()))
 
 	source, err := ioutil.ReadFile(path)
 	if err != nil {
